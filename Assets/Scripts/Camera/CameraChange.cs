@@ -9,9 +9,9 @@ public class CameraChange : MonoBehaviour
     public GameObject firstCam;
     public int camMode;
 
-    private void Update()
+    private void LateUpdate()
     {
-        if(Input.GetButtonDown("Fire3"))
+        if(Input.GetButtonDown("Fire1"))
         {
             if(camMode == 1)
             {
@@ -21,9 +21,20 @@ public class CameraChange : MonoBehaviour
             {
                 camMode += 1;
             }
-
-            StartCoroutine(CamChange());
         }
+
+        if (Input.GetButtonUp("Fire1"))
+        {
+            if (camMode == 1)
+            {
+                camMode = 0;
+            }
+            else
+            {
+                camMode += 1;
+            }
+        }
+        StartCoroutine(CamChange());
     }
 
     IEnumerator CamChange()

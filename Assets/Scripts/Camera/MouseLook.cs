@@ -21,6 +21,7 @@ public class MouseLook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        
         //moves camera on the correcsponding axis
         //mouse x and y are build into unitys input system
         float mouseX = Input.GetAxis("Mouse X") * mouseSensitivity * Time.deltaTime;
@@ -33,5 +34,6 @@ public class MouseLook : MonoBehaviour
         transform.localRotation = Quaternion.Euler(_xRotation, 0f, 0f);
         //Roataes the playerOrientation to move with camera
         player.Rotate(Vector3.up * mouseX);
+        
     }
 }
