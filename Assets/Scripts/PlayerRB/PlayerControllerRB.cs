@@ -12,7 +12,7 @@ public class PlayerControllerRB : MonoBehaviour
     public float rotateSpeed = 10f;
 
     //jump & DoubleJump
-    public float jumpHeight = 45f;
+    public float jumpHeight = 35f;
     public float maxJump = 2;
     public float currrentJumps = 0;
 
@@ -23,25 +23,24 @@ public class PlayerControllerRB : MonoBehaviour
 
     Rigidbody _rb;
 
-    float _gravityMultiplier = 5f;
-
     CameraChange _camChange;
 
     public AudioSource jumpLandSound;
 
+    public Animator anim;
 
     //[SerializeField] ParticleSystem jumpParticle;
     //[SerializeField] ParticleSystem dashParticle;
+    
     void Start()
     {
         Cursor.lockState = CursorLockMode.Confined;
-        Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         _rb = GetComponent<Rigidbody>();
         //makes sure there is no rotation on the model
         _rb.freezeRotation = true;
-        Physics.gravity = new Vector3(0, Physics.gravity.y * _gravityMultiplier);
+        Physics.gravity = new Vector3(0, Physics.gravity.y, 0);
 
         //Finds Camera Monitor
         GameObject camMonitorObject = GameObject.FindWithTag("CamMonitor");
@@ -53,24 +52,30 @@ public class PlayerControllerRB : MonoBehaviour
         {
             Debug.Log("Cannot find 'CamChange' script");
         }
+
     }
 
     void Update()
     {
-        Jump();
-
         if (Input.GetKeyDown(KeyCode.E) || Input.GetKeyDown(KeyCode.Joystick1Button1))
         {
             StartCoroutine("Dash");
         }
+
     }
 
     void FixedUpdate()
     {
+        Jump();
+        Movement();
+    }
+
+    void Movement()
+    {
         //basic movement
         Vector3 move = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
         move = move.normalized * moveSpeed; //helps smooth the movement
-        _rb.MovePosition(_rb.position + move *Time.deltaTime);
+        _rb.MovePosition(_rb.position + move * Time.deltaTime);
 
         if (_camChange.camMode == 0)
         {
@@ -82,7 +87,6 @@ public class PlayerControllerRB : MonoBehaviour
                 playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
             }
         }
-        
     }
 
     void Jump()
@@ -96,11 +100,10 @@ public class PlayerControllerRB : MonoBehaviour
             _isGrounded = false;
             //jumpParticle.Play();
             
-            
         }
 
         Invoke("jumpReset", 1f);
-
+        Debug.Log(Physics.gravity);
     }
 
     private void jumpReset()

@@ -41,7 +41,7 @@ public class Laser : MonoBehaviour
         }
     }
 
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetButton("Fire1") && numOfCharges >=0)
         {

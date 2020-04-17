@@ -5,8 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class PlayerController : MonoBehaviour
 {
-    public float health = 9;
-
     public Transform thirdPersonCam;
     public GameObject playerModel;
 
@@ -49,14 +47,17 @@ public class PlayerController : MonoBehaviour
         {
             StartCoroutine("Dash");
         }
-
-        Jump();
     }
     void FixedUpdate()
     {
-       
+        Movement();
+        Jump();
+    }
+
+    void Movement()
+    {
         //moves the player bases on  where the mouse is looking.
-        Vector3 move = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal") );
+        Vector3 move = (transform.forward * Input.GetAxis("Vertical")) + (transform.right * Input.GetAxis("Horizontal"));
         move = move.normalized * moveSpeed; //helps smooth the movement
         controller.Move(move * Time.deltaTime);
 
@@ -70,7 +71,6 @@ public class PlayerController : MonoBehaviour
                 playerModel.transform.rotation = Quaternion.Slerp(playerModel.transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
             }
         }
-
     }
 
     void Jump()
@@ -105,10 +105,5 @@ public class PlayerController : MonoBehaviour
         moveSpeed -= dashSpeed;
     }
 
-    public void TakeDamage(float amount)
-    {
-        health -= amount;
-
-    }
 
 }

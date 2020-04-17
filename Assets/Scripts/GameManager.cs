@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using Fungus;
 
 public class GameManager : MonoBehaviour
 { 
@@ -39,6 +40,8 @@ public class GameManager : MonoBehaviour
     //scripts
     PlayerControllerRB _playerController;
     Laser _laser;
+
+    bool _dialogueOpen = false;
 
     //Audio 
     public AudioSource lostLifeSound;
@@ -106,6 +109,24 @@ public class GameManager : MonoBehaviour
             }
         }
 
+        if (FindObjectOfType<SayDialog>())
+        {
+            _dialogueOpen = true;
+            PauseMovement();
+        }
+        
+    }
+
+    public void PauseMovement()
+    {
+        if (_dialogueOpen)
+        {
+            Debug.Log("Dialog going Movement Paused");
+        }
+        else
+        {
+            
+        }
     }
 
     //General Buttons
@@ -114,6 +135,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Resume");
         pauseMenuUI.SetActive(false);
         Time.timeScale = 1f;
+        AudioListener.pause = false;
         GameIsPaused = false;
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
@@ -124,6 +146,7 @@ public class GameManager : MonoBehaviour
         //Debug.Log("Paused");
         pauseMenuUI.SetActive(true);
         Time.timeScale = 0f;
+        AudioListener.pause = true;
         GameIsPaused = true;
         Cursor.visible = true;
         Cursor.lockState = CursorLockMode.None;
@@ -148,7 +171,6 @@ public class GameManager : MonoBehaviour
     public void Instructions()
     {
         SceneManager.LoadScene("Instructions");
-        Debug.Log("Ins");
     }
 
     //SCENES
@@ -156,7 +178,6 @@ public class GameManager : MonoBehaviour
     public void PlayGame()
     {
         SceneManager.LoadScene("Level 1");
-        Debug.Log("Ins");
     }
 
     public void Credits()
@@ -167,8 +188,7 @@ public class GameManager : MonoBehaviour
     public void ResetCurrentScene()
     {
         lostLifeSound.Play();
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);//restarts current scene
-        //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex, LoadSceneMode.Single);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);//restarts current scene
     }
 
 
@@ -181,7 +201,7 @@ public class GameManager : MonoBehaviour
             health -= amount;
             PlayerPrefs.SetFloat("Health", health);
             Debug.Log("PlayerPrefs health " + health);
-            //ResetCurrentScene();
+            ResetCurrentScene();
         }
 
     }

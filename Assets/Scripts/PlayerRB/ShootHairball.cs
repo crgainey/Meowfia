@@ -16,7 +16,7 @@ public class ShootHairball : MonoBehaviour
     
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         if (Input.GetButtonDown("Fire2") && Time.time >= shootDelay)
         {

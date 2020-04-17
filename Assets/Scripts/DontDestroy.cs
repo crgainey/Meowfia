@@ -8,6 +8,7 @@ public class DontDestroy : MonoBehaviour
     {
         GameObject[] gm = GameObject.FindGameObjectsWithTag("GameController");
         GameObject[] UI = GameObject.FindGameObjectsWithTag("UI");
+        GameObject[] player = GameObject.FindGameObjectsWithTag("Player");
 
         //makes sure there is only one of the gameobject in the scene
         if (gm.Length > 1)
@@ -16,6 +17,11 @@ public class DontDestroy : MonoBehaviour
         }
 
         if (UI.Length > 1)
+        {
+            Destroy(this.gameObject);
+        }
+
+        if (player.Length > 1)
         {
             Destroy(this.gameObject);
         }

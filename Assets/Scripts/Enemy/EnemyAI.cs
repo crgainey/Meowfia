@@ -19,7 +19,6 @@ public class EnemyAI : MonoBehaviour
     int _nextpoint = 0;
 
     NavMeshAgent _agent;
-    PlayerControllerRB _playerController;
     GameManager _gm;
 
     public AudioSource angryCat;
@@ -29,18 +28,6 @@ public class EnemyAI : MonoBehaviour
     {
         _agent = GetComponent<NavMeshAgent>();
             GoToNextPoint();
-
-
-        //Finds the player script
-        GameObject playerObject = GameObject.FindWithTag("Player");
-        if (playerObject != null)
-        {
-            _playerController = playerObject.GetComponent<PlayerControllerRB>();
-        }
-        if (playerObject == null)
-        {
-            Debug.Log("Cannot find 'Player' script");
-        }
 
         GameObject gmObject = GameObject.FindWithTag("GameController");
         if (gmObject != null)
@@ -119,9 +106,9 @@ public class EnemyAI : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("Player"))
         {
-            //Debug.Log("Life Lost");
+            Debug.Log("Enemy took Lost");
             _gm.TakeDamage(damage);
 
         }
-    }
+    } 
 }
